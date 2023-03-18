@@ -1,0 +1,59 @@
+{# This template is based on the "base.html.jinja" template. #}
+{% extends "base.html.jinja" %}
+{% block content %}
+    <h2 class="fs-2 mb-4 text-center">Lista produktów</h2>
+    <!--
+        {# Create an undordered HTML list. #}
+        <ul class="list-group">
+            {# Create a list of products using a for-loop. #}
+            {% for product in products %}
+                {# Create an element in the unordered list. #}
+                <li class="list-group-item d-flex justify-content-between align-items-center rounded-0 mb-3">
+                    {# Create a clickable link to the product's page. <i></i>> tag adds a "link" badge to the link. #}
+                    <a class="nav-link fs-6" href="{{url_for('product', product_id=product['product_id'])}}">
+                    <i class="bi bi-arrow-up-right-square-fill"></i> {{product['product_id']}}</a>
+                    {# Add a number badge to the element. #}
+                    <span class="badge bg-secondary rounded-0 fs-6">{{loop.index}}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    -->
+
+        {# Create an HTML table. #}
+        <table class="table table-bordered table-responsive table-hover">
+            {# Create a header row. #}
+            <thead class="text-light">
+                <tr>
+                    <th class="col">ID Produktu</th>
+                    <th class="col">Nazwa Produktu</th>
+                    <th class="col">Liczba Opinii</th>
+                    <th class="col">Liczba Pozytywów</th>
+                    <th class="col">Liczba Negatywów</th>
+                    <th class="col">Średnia Ocena</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                {# Create a table of products and their properties using a for-loop. #}
+                {% for product in products %}
+                    {# Create a row displaying properties of a single product. #}
+                    <tr>
+                        {# Iterate through properties of a product and add them to the row. #}
+                        {% for value in product.values() %}
+                            {# If value is NOT a product ID: #}
+                            {% if value != product['product_name'] %}
+                                <td>{{value}}</td>
+                            {# If value IS a product ID: #}
+                            {% else %}
+                                <td>
+                                    <a class="text-decoration-none" href="{{url_for('product', product_id=product['product_id'])}}">
+                                        {{value}}<i class="ms-2 bi bi-arrow-up-right-square-fill"></i>
+                                    </a>
+                                </td>
+                                
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock content %}

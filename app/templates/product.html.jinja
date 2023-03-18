@@ -1,0 +1,22 @@
+{# This template is based on the "base.html.jinja" template. #}
+{% extends "base.html.jinja" %}
+{% block content %}
+    {# Display product info based on the passed parameters. #}
+    <h2>Opis produktu <a href="https://www.ceneo.pl/{{product_id}}" class="text-decoration-none" style="no">&quot;{{stats["product_name"]}}&quot;</a></h2>
+        <p>ID produktu: {{product_id}}</p>
+        <p>Liczba opinii: {{stats["opinions_count"]}}</p>
+        <p>Liczba zalet: {{stats["pros_count"]}}</p>
+        <p>Liczba wad: {{stats["cons_count"]}}</p>
+        <p>Przeciętna ocena: {{stats["average_score"]}}</p>
+
+    {# Display the "recommendations" and "stars" graphs. #}
+    <h2 class="pt-4">Statystyki</h2>
+        <div class="row py-2">
+            <div class="col-sm">
+                <img src="../static/plots/{{product_id}}_recommendations.png" alt="Recommendations" class="img-fluid pb-3">
+            </div>
+            <div class="col-sm">
+                <img src="../static/plots/{{product_id}}_stars.png" alt="Stars" class="img-fluid">
+            </div>
+        </div>
+{% endblock content %}

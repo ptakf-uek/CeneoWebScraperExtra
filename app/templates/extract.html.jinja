@@ -1,0 +1,29 @@
+{# This template is based on the "base.html.jinja" template. #}
+{% extends "base.html.jinja" %}
+{% block content %}
+<div class="text-center">
+    <h2 class="fs-2 mb-4">Pobierz opinie o produkcie</h2>
+    {# If something went wrong (for example wrong product ID was given) when downloading opinions about a product
+    display an error. #}
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+        <strong>{{error}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {# A simple POST form. Used for downloading opinions about a product. #}
+    <form action="{{url_for('extract')}}" method="POST">
+            <div class="row g-3 align-items-center justify-content-center">
+                <div class="col-auto">
+                    <label for="product_id" class="fs-5 col-form-label">ID produktu:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="fs-5 bg-white" id="product_id" name="product_id">
+                </div>
+                <div class="col-auto">
+                    <input type="submit" class="btn rounded-0 btn-warning" value="Pobierz">
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock content %}

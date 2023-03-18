@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeneoWebScraper</title>
+    <link rel="shortcut icon" href="../static/images/favicon.ico">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+</head>
+<body class="text-bg-dark">
+    <header>
+        <div class="container">
+            <div class="row py-2 align-items-center justify-content-center">
+                <div class="col-auto">
+                    <a href="/"><img class="float-end" src="../static/images/logo.png" alt="LOGO" style="max-width:75%;"></a>
+                </div>
+                <div class="col-auto">
+                        <h1 class="fs-1 pt-2">CENEO WEB SCRAPER</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-md text-bg-warning py-1 my-1 sticky-top" aria-label="Navigation bar">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarMain">
+                <ul class="navbar-nav">
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="{{url_for('index')}}">Strona główna</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="{{url_for('extract')}}">Ekstrakcja opinii</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="{{url_for('products')}}">Lista produktów</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="{{url_for('author')}}">O autorze</a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="row py-4">
+
+                <div class="col-2 d-none d-sm-block">
+                    
+                </div>
+
+                <div class="col">
+                    {# This place is filled with content from other templates based on the "base.html.jinja" template. #}
+                    {% block content %}
+                        <p>base.html.jinja</p>
+                    {% endblock content %}
+                </div>
+
+                <div class="col-2 d-none d-sm-block">
+                    
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="container">
+        <footer class="py-3 my-4 text-bg-dark">
+            <ul class="nav justify-content-center border-bottom border-light pb-1 mb-1">
+                <li class="nav-item">
+                    <a class="nav-link px-2 link-light" href="/"><i class="bi bi-house"></i> Strona główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 link-light" href="author"><i class="bi bi-person-circle"></i> O autorze</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 link-light" href="https://github.com/f-ptak/CeneoWebScraperExtra">
+                    <i class="bi bi-github"></i> Repozytorium projektu</a>
+                </li>
+            </ul>
+            <p class="text-center">&copy; Ptak Filip - Akademia GNUrniczo-Hutnicza w Krakowie</p>
+        </footer>
+    </div>
+    
+</body>
+</html>

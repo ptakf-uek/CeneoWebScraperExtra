@@ -1,0 +1,52 @@
+{# This template is based on the "base.html.jinja" template. #}
+{% extends "base.html.jinja" %}
+{% block content %}
+    {# A simple home page. #}
+    <h2>Cel projektu</h2>
+        <P>Celem projektu &quot;CeneoWebScraper&quot; jest nauka działania micro-frameworka Flask w celu
+        obszerniejszego pojęcia działania języka programowania Python, zapoznanie się z frameworkiem CSS Bootstrap
+        oraz rozwinięcie się pod kątem przyszłej kariery i przygotowanie się do zawodu.</p>
+    
+    <h2>Sposób działania aplikacji</h2>
+        <p class="mb-1">Po wprowadzeniu przez użytkownika ID produktu znajdującego się na serwisie
+        <a href="https://www.ceneo.pl" class="link-info">Ceneo.pl</a>, aplikacja pobiera opinie o danym produkcie,
+        po czym generuje wykresy dotyczące opinii oraz pozwala na wyświetlenie statystyk i szczegółów produktu.</p>
+        <p>Projekt wykorzystuje między innymi biblioteki: Flask, pandas, NumPy oraz Beautiful Soup.</p>
+
+    <h2>Etapy pracy nad projektem strukturalnym</h2>
+        <ul class="list-unstyled">
+            <li>1. Pobranie elementów pojedynczej opinii do niezależnych zmiennych</li>
+            <li>2. Zapisanie wszystkich elementów pojedynczej opinii do jednej zmiennej (słownik)</li>
+            <li>3. Pobranie wszystkich opinii z pojedynczej strony do słowników i zapisanie ich do listy</li>
+            <li>4. Pobranie wszystkich opinii o produkcie z wszystkich stron i zapisanie ich do pliku .json</li>
+            <li>5. Dodawanie możliwości podania id produktu przez użytkownika za pomocą klawiatury</li>
+            <li>6. Refatoryzacja (optymalizacja) kodu:
+                <ul class="list-unstyled ms-5">
+                    <li>i. utworzenie funkcji do pobierania składowych strony HTML</li>
+                    <li>ii. utworzenie słownika opisującego strukturę opinii wraz z selektorami poszczególnych elementów</li>
+                    <li>iii. zamiana instrukcji pobierających składowe opinii do pojedynczych zmiennych tworzących z nich
+                    słownik na wyrażenie słownikowe (dictionary comprehension) tworzące słownik reprezentujący pojedynczą
+                    opinię na podstawie słownika selektorów</li>
+                </ul>
+            </li>
+            <li>7. Analiza opinii o wybranym produkcie:
+                <ul class="list-unstyled ms-5">
+                    <li>i. wczytanie wszystkich opinii o wskazanym produkcie do obiektu DataFrame</li>
+                    <li>ii. wyliczanie podstawowych statystyk na podstawie opinii:
+                        <ul class="list-unstyled ms-5">
+                            <li>a. liczba wszystkich opinii o produkcie</li>
+                            <li>b. liczba opinii, w których autor podał listę zalet produktu</li>
+                            <li>c. liczba opinii, w których autor podał listę wad produktu</li>
+                            <li>d. średnia ocena produktu</li>
+                        </ul>
+                    </li>
+                    <li>iii. przygotowanie wykresów na podstawie zawartości opinii:
+                        <ul class="list-unstyled ms-5">
+                            <li>a. udział poszczególnych rekomendacji w ogólnej liczbie opinii</li>
+                            <li>b. histogram częstości występowania poszczególnych ocen (liczby gwiazdek)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+{% endblock content %}
