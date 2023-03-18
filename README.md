@@ -9,7 +9,9 @@
 
 ***
 
-CeneoWebScraper is a simple website-scraping project created in order to learn working with several popular libraries and packages, including the Flask microframework and the Bootstrap CSS framework.
+CeneoWebScraper is a simple website-scraping project created in order to learn working with several popular Python and web libraries and packages, including the Flask microframework and the Bootstrap CSS framework.
+
+Python >=3.10 is required to run this web application.
 
 ***
 

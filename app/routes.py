@@ -4,6 +4,8 @@ from app import app
 # url_for               - used for generating a URL for the passed subpage (e. g. url_for("extract") generates a URL pointing to the /extract page).
 # request               - used for getting the data sent from the client to the server.
 # send_from_directory   - used for safely sending files from a specific directory.
+# "BytesIO" is used for working with binary streams.
+from io import BytesIO
 from flask import render_template, redirect, url_for, request, send_from_directory, Response
 # "os" package is used for reading/writing to files.
 import os
@@ -92,15 +94,27 @@ def download_opinions(product_id, extension):
     match extension:
         case "json":
             # Return a .json file from a specific directory as an attachment.
-            return send_from_directory("opinions/", f"{product_id}.json", as_attachment=True)
+            return send_from_directory("opinions/", f"{product_id}.{extension}", as_attachment=True)
         case "csv":
             # Return a .csv file.
             return Response(
-                # Read a .json file using pandas and convert the JSON string to a CSV string.
-                # "index=False" disables writing row numbers.
+                # Read a .json file as a pandas DataFrame and convert it to a CSV string.
+                # "index=False" disables writing row numbers in the first column.
                 pd.read_json(f'app/opinions/{product_id}.json').to_csv(encoding="UTF-8", index=False),
                 mimetype='text/csv',
-                headers={'Content-disposition': f'attachment; filename={product_id}.csv'})
+                headers={'Content-disposition': f'attachment; filename={product_id}.{extension}'})
         case "xlsx":
+            # Create a binary stream.
+            byteIO = BytesIO()
+            # Read a .json file as a pandas DataFrame and write it in an excel format to the stream.
+            # "index=False" disables writing row numbers in the first column.
+            pd.read_json(f'app/opinions/{product_id}.json').to_excel(byteIO, index=False)
+            # Move to the start of the stream.
+            # Otherwise the returned file will have no data (will be empty).
+            byteIO.seek(0)
+
             # Return an .xlsx file.
-            ...
+            return Response(
+                byteIO,
+                mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                headers={'Content-disposition': f'attachment; filename={product_id}.{extension}'})
