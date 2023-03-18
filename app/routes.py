@@ -1,13 +1,16 @@
 from app import app
-# render_template   - used for creating a page based on the passed jinja template.
-# redirect          - used for redirecting to the passed URL.
-# url_for           - used for generating a URL for the passed subpage (e. g. url_for("extract") generates a URL pointing to the /extract page).
-# request           - used for getting the data sent from the client to the server.
-from flask import render_template, redirect, url_for, request
+# render_template       - used for creating a page based on the passed jinja template.
+# redirect              - used for redirecting to the passed URL.
+# url_for               - used for generating a URL for the passed subpage (e. g. url_for("extract") generates a URL pointing to the /extract page).
+# request               - used for getting the data sent from the client to the server.
+# send_from_directory   - used for safely sending files from a specific directory.
+from flask import render_template, redirect, url_for, request, send_from_directory, Response
 # "os" package is used for reading/writing to files.
 import os
 # "json" package is used for working with .json files.
 import json
+# "pandas" package is used for generating and manipulating data and data structures.
+import pandas as pd
 # Import the Product class from the app/models directory.
 from app.models.product import Product
 
@@ -53,10 +56,6 @@ def extract():
 # Route to the /products page.
 @app.route('/products')
 def products():
-    # # Old way:
-    # # Get a list of files (without the file extension) in the app/opinions directory.
-    # # products = [filename.split(".")[0] for filename in os.listdir("app/opinions")]
-
     PRODUCTS_DIRECTORY = "app/products"
     products = []
 
@@ -66,7 +65,7 @@ def products():
             products.append(product_information)
 
     # Open the "products.html.jinja" page displaying a list of the passed products.
-    return render_template("products.html.jinja", products=products)
+    return render_template("products.html.jinja", products=products, PRODUCTS_DIRECTORY=PRODUCTS_DIRECTORY)
 
 # Route to the /author page.
 @app.route('/author')
@@ -86,3 +85,22 @@ def product(product_id):
     stats = product.stats_to_dict()
     # Open the "product.html.jinja" page displaying specific product information based on the passed parameters.
     return render_template("product.html.jinja", product_id=product_id, stats=stats)
+
+# Route used for downloading files containing opinions.
+@app.route('/opinions/<product_id>.<extension>')
+def download_opinions(product_id, extension):
+    match extension:
+        case "json":
+            # Return a .json file from a specific directory as an attachment.
+            return send_from_directory("opinions/", f"{product_id}.json", as_attachment=True)
+        case "csv":
+            # Return a .csv file.
+            return Response(
+                # Read a .json file using pandas and convert the JSON string to a CSV string.
+                # "index=False" disables writing row numbers.
+                pd.read_json(f'app/opinions/{product_id}.json').to_csv(encoding="UTF-8", index=False),
+                mimetype='text/csv',
+                headers={'Content-disposition': f'attachment; filename={product_id}.csv'})
+        case "xlsx":
+            # Return an .xlsx file.
+            ...

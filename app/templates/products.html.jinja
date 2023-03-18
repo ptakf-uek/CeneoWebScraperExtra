@@ -30,13 +30,14 @@
                     <th class="col">Liczba Pozytywów</th>
                     <th class="col">Liczba Negatywów</th>
                     <th class="col">Średnia Ocena</th>
+                    <th class="col">Pobierz Opinie</th>
                 </tr>
             </thead>
             <tbody class="table-light">
                 {# Create a table of products and their properties using a for-loop. #}
                 {% for product in products %}
                     {# Create a row displaying properties of a single product. #}
-                    <tr>
+                    <tr class="align-middle">
                         {# Iterate through properties of a product and add them to the row. #}
                         {% for value in product.values() %}
                             {# If value is NOT a product ID: #}
@@ -46,12 +47,20 @@
                             {% else %}
                                 <td>
                                     <a class="text-decoration-none" href="{{url_for('product', product_id=product['product_id'])}}">
-                                        {{value}}<i class="ms-2 bi bi-arrow-up-right-square-fill"></i>
+                                        {{value}}<i class="bi bi-arrow-up-right-square-fill ms-1"></i>
                                     </a>
                                 </td>
-                                
                             {% endif %}
                         {% endfor %}
+                        {# File download column. #}
+                        <td>
+                            {# Generate download links for specific file formats. #}
+                            {% for extension in ["json", "csv", "xlsx"] %}
+                                <a class="text-decoration-none" href="{{url_for('download_opinions', product_id=product['product_id'], extension=extension)}}">
+                                    {{extension.upper()}}<i class="bi bi-download ms-1"></i>
+                                </a><br>
+                            {% endfor %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
