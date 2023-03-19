@@ -61,12 +61,12 @@ def products():
     products = []
 
     for product_id in [filename.split(".")[0] for filename in os.listdir("app/opinions")]:
-            # Create an instance of the Product class based on the product's ID.
-            product = Product(product_id)
-            # Import product's properties to the "product" object.
-            product.import_product(import_opinions=False)
-            # Append properties about a single product to the "products" list.
-            products.append(product.stats_to_dict())
+        # Create an instance of the Product class based on the product's ID.
+        product = Product(product_id)
+        # Import product's properties to the "product" object without importing opinions.
+        product.import_product(import_opinions=False)
+        # Append properties about a single product to the "products" list.
+        products.append(product.stats_to_dict())
 
     # Open the "products.html.jinja" page displaying a list of the passed products.
     return render_template("products.html.jinja", products=products)
@@ -85,10 +85,15 @@ def product(product_id):
     product = Product(product_id)
     # Import product's properties and opinions to the "product" object.
     product.import_product()
-    # Set the "stats" variable to a dictionary of the "product" object's statistics.
-    stats = product.stats_to_dict()
+    # Set the "product_dictionary" variable to a dictionary of the "product" object's properties.
+    product_dictionary = product.to_dict()
+    # # counter = 1
+    # # for opinion in product_dictionary['opinions']:
+    # #     # print(opinion)
+    # #     print(counter)
+    # #     counter += 1
     # Open the "product.html.jinja" page displaying specific product's properties based on the passed parameters.
-    return render_template("product.html.jinja", stats=stats)
+    return render_template("product.html.jinja", product=product_dictionary)
 
 # Route to a specific /graphs/<product_id> page.
 @app.route('/graphs/<product_id>')

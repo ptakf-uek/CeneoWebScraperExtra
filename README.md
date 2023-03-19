@@ -1,6 +1,6 @@
 ***
 
-<h1 style="text-align:center;"> 
+<h1 align="center"> 
   <sub>
     <img src="app/static/images/logo.png" height="40" width="40">
   </sub>
@@ -15,14 +15,9 @@ Python >=3.10 is required to run this web application.
 
 ***
 
-<div style="display:flex;justify-content:space-around;">
-  <div style="padding:1vw">
-    <img src="sample-image-1.jpg">
-  </div>
-  <div style="padding:1vw">
-    <img src="sample-image-2.jpg">
-  </div>
-</div>
+<p style="text-align:center;">
+  <img src="sample-image-1.jpg">
+</p>
 
 ***
 

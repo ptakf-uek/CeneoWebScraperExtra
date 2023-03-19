@@ -2,7 +2,7 @@
 {% extends "base.html.jinja" %}
 {% block content %}
     {# A page displaying product information. #}
-    <h2 class="mb-4 text-center">Opis produktu <a href="https://www.ceneo.pl/{{stats['product_id']}}" class="text-decoration-none" style="no">&quot;{{stats["product_name"]}}&quot;</a></h2>
+    <h2 class="mb-4 text-center">Opis produktu <a href="https://www.ceneo.pl/{{product['product_id']}}" class="text-decoration-none" style="no">&quot;{{product["product_name"]}}&quot;</a></h2>
 
         {# Create an HTML table. #}
         <table class="table table-responsive">
@@ -21,9 +21,9 @@
                     {# Create a row displaying properties of a single product. #}
                     <tr class="align-middle text-center">
                         {# Iterate through properties of a product and add them to the row. #}
-                        {% for value in stats.values() %}
+                        {% for value in product.values() %}
                             {# If value is NOT a product ID: #}
-                            {% if value != stats['product_name'] %}
+                            {% if value not in [product['product_name'], product['opinions']] %}
                                 <td>{{value}}</td>
                             {% endif %}
                         {% endfor %}
@@ -31,7 +31,7 @@
                         <td>
                             {# Generate download links for specific file formats. #}
                             {% for extension in ["json", "csv", "xlsx"] %}
-                                <a class="text-decoration-none" href="{{url_for('download_opinions', product_id=stats['product_id'], extension=extension)}}">
+                                <a class="text-decoration-none" href="{{url_for('download_opinions', product_id=product['product_id'], extension=extension)}}">
                                     {{extension.upper()}}<i class="bi bi-filetype-{{extension}} ms-1"></i>
                                 </a>
                             {% endfor %}
@@ -41,12 +41,57 @@
         </table>
 
         <h4>
-            <a type="button" class="btn btn-warning rounded-0" href="{{url_for('graphs', product_id=stats['product_id'])}}">
-                Przejdź do wykresów<i class="bi bi-arrow-up-right-square ms-1"></i>
+            <a type="button" class="btn btn-warning rounded-0" href="{{url_for('graphs', product_id=product['product_id'])}}">
+                Przejdź do wykresów<i class="bi bi-arrow-up-right-square-fill ms-1"></i>
             </a>
         </h4>
 
         {# Display the product's opinions. #}
-        <h4 class="text-center pt-4">Opinie</h4>
+        <h3 class="text-center pt-4 mb-4">Lista opinii</h3>
 
+            {# Create a responsive HTML table. #}
+            <div class="container table-responsive">
+                <table class="table table-bordered table-hover justify-content-center">
+                    {# Create a header row. #}
+                    <thead class="text-light">
+                        <tr>
+                            <th class="col">ID Opinii</th>
+                            <th class="col">Autor</th>
+                            <th class="col">Poleca</th>
+                            <th class="col"><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></th>
+                            <th class="col">Komentarz</th>
+                            <th class="col"><i class="bi bi-hand-thumbs-up-fill"></i></th>
+                            <th class="col"><i class="bi bi-hand-thumbs-down-fill"></i></th>
+                            <th class="col">Data Publikacji</th>
+                            <th class="col">Data Zakupu</th>
+                            <th class="col">Lista Zalet</th>
+                            <th class="col">Lista Wad</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {# Create a table of opinions and their properties using a for-loop. #}
+                        {% for opinion in product['opinions'] %}
+                            {# Create a row displaying properties of a single opinion. #}
+                            <tr class="align-middle">
+                                {# Iterate through properties of an opinion and add them to the row. #}
+                                {% for value in opinion.values() %}
+                                    {# If value is NOT a list of pros or cons: #}
+                                    {% if not value in [opinion['pros'], opinion['cons']] %}
+                                        <td>{{value}}</td>
+                                    {# If value IS a list of pros or cons: #}
+                                    {% else %}
+                                        <td>
+                                            <ul class="ps-3">
+                                                {% for procon in value %}
+                                                    <li>{{procon}}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 {% endblock content %}
