@@ -1,22 +1,52 @@
 {# This template is based on the "base.html.jinja" template. #}
 {% extends "base.html.jinja" %}
 {% block content %}
-    {# Display product info based on the passed parameters. #}
-    <h2>Opis produktu <a href="https://www.ceneo.pl/{{product_id}}" class="text-decoration-none" style="no">&quot;{{stats["product_name"]}}&quot;</a></h2>
-        <p>ID produktu: {{product_id}}</p>
-        <p>Liczba opinii: {{stats["opinions_count"]}}</p>
-        <p>Liczba zalet: {{stats["pros_count"]}}</p>
-        <p>Liczba wad: {{stats["cons_count"]}}</p>
-        <p>Przeciętna ocena: {{stats["average_score"]}}</p>
+    {# A page displaying product information. #}
+    <h2 class="mb-4 text-center">Opis produktu <a href="https://www.ceneo.pl/{{stats['product_id']}}" class="text-decoration-none" style="no">&quot;{{stats["product_name"]}}&quot;</a></h2>
 
-    {# Display the "recommendations" and "stars" graphs. #}
-    <h2 class="pt-4">Statystyki</h2>
-        <div class="row py-2">
-            <div class="col-sm">
-                <img src="../static/plots/{{product_id}}_recommendations.png" alt="Recommendations" class="img-fluid pb-3">
-            </div>
-            <div class="col-sm">
-                <img src="../static/plots/{{product_id}}_stars.png" alt="Stars" class="img-fluid">
-            </div>
-        </div>
+        {# Create an HTML table. #}
+        <table class="table table-responsive">
+            {# Create a header row. #}
+            <thead class="text-light text-center">
+                <tr>
+                    <th class="col">ID Produktu</th>
+                    <th class="col">Liczba Opinii</th>
+                    <th class="col">Liczba Zalet</th>
+                    <th class="col">Liczba Wad</th>
+                    <th class="col">Średnia Ocena</th>
+                    <th class="col">Pobierz Opinie</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                    {# Create a row displaying properties of a single product. #}
+                    <tr class="align-middle text-center">
+                        {# Iterate through properties of a product and add them to the row. #}
+                        {% for value in stats.values() %}
+                            {# If value is NOT a product ID: #}
+                            {% if value != stats['product_name'] %}
+                                <td>{{value}}</td>
+                            {% endif %}
+                        {% endfor %}
+                        {# File download column. #}
+                        <td>
+                            {# Generate download links for specific file formats. #}
+                            {% for extension in ["json", "csv", "xlsx"] %}
+                                <a class="text-decoration-none" href="{{url_for('download_opinions', product_id=stats['product_id'], extension=extension)}}">
+                                    {{extension.upper()}}<i class="bi bi-filetype-{{extension}} ms-1"></i>
+                                </a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+
+        <h4>
+            <a type="button" class="btn btn-warning rounded-0" href="{{url_for('graphs', product_id=stats['product_id'])}}">
+                Przejdź do wykresów<i class="bi bi-arrow-up-right-square ms-1"></i>
+            </a>
+        </h4>
+
+        {# Display the product's opinions. #}
+        <h4 class="text-center pt-4">Opinie</h4>
+
 {% endblock content %}

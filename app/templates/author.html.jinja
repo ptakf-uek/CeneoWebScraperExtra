@@ -2,16 +2,16 @@
 {% extends "base.html.jinja" %}
 {% block content %}
     {# A simple about author page. #}
-    <h2 class="py-2">Howdy, pardner!</h2>
-        <div class="row">
-            <div class="col">
+    <div class="row">
+        <div class="col">
+            <h2>Howdy, pardner!</h2>
                 <p class="mb-1">Name's Phil <i>*tips his ten gallon*</i> And welcome to mah ranch!</p>
                 <p>We makin' 'sites here, pardner. It ain't much, but it sure <del><i>as hell</i></del> is an honest piece of work.</p>
                 <p class="mb-1">So saddle up, cowboys, 'cause this is gonna be <del><i>one hell of</del></i> a bumpy ride,</p>
                 <h4>YEEEE HAWWWWW!</h4>
-            </div>
-            <div class="col">
-                <img src="../static/images/oldcowboy.png" alt="Old Cowboy" class="img-fluid border border-4 border-warning" width="300px">
-            </div>
         </div>
+        <div class="col">
+            <img src="../static/images/oldcowboy.png" alt="Old Cowboy" class="img-fluid border border-4 border-warning" width="300px">
+        </div>
+    </div>
 {% endblock content %}

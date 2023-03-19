@@ -201,7 +201,7 @@ class Product():
             # "ensure_ascii=False" enables saving non-ASCII characters (e. g. letters with accents) to the file.
             json.dump(self.opinions_to_dict(), jf, indent=4, ensure_ascii=False)
     
-    def import_product(self):
+    def import_product(self, import_opinions=True):
         # If a .json file with the passed product_id exists,
         if os.path.exists(f"app/products/{self.product_id}.json"):
             # open it with only reading enabled.
@@ -216,15 +216,17 @@ class Product():
             self.cons_count = product["cons_count"]
             self.average_score = product["average_score"]
 
-            # Open a (different) .json file with only writing enabled.
-            with open(f"app/opinions/{self.product_id}.json", "r", encoding="UTF-8") as jf:
-                # Convert a JSON object to a Python object.
-                opinions = json.load(jf)
-                
-            # For every opinion found in the converted Python object
-            for opinion in opinions:
-                # add the opinion to the current object's "opinions" attribute.
-                # "**opinion" means that every key-value pair in a the "opinion" variable (which is a dictionary)
-                # is passed as separate parameter instead of passing the whole dictionary as a single parameter.
-                # "**" (and "*") before a variable name specifies that the iterable will be unpacked.
-                self.opinions.append(Opinion(**opinion))
+            # If the optional parameter "import_opinions" is set to True, import opinions.
+            if import_opinions:
+                # Open a .json file with only writing enabled.
+                with open(f"app/opinions/{self.product_id}.json", "r", encoding="UTF-8") as jf:
+                    # Convert a JSON object to a Python object.
+                    opinions = json.load(jf)
+                    
+                # For every opinion found in the converted Python object
+                for opinion in opinions:
+                    # add the opinion to the current object's "opinions" attribute.
+                    # "**opinion" means that every key-value pair in a the "opinion" variable (which is a dictionary)
+                    # is passed as separate parameter instead of passing the whole dictionary as a single parameter.
+                    # "**" (and "*") before a variable name specifies that the iterable will be unpacked.
+                    self.opinions.append(Opinion(**opinion))

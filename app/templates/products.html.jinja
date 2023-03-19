@@ -1,7 +1,7 @@
 {# This template is based on the "base.html.jinja" template. #}
 {% extends "base.html.jinja" %}
 {% block content %}
-    <h2 class="fs-2 mb-4 text-center">Lista produktów</h2>
+    <h2 class="mb-4 text-center">Lista produktów</h2>
         {# Create an HTML table. #}
         <table class="table table-bordered table-responsive table-hover">
             {# Create a header row. #}
@@ -10,8 +10,8 @@
                     <th class="col">ID Produktu</th>
                     <th class="col">Nazwa Produktu</th>
                     <th class="col">Liczba Opinii</th>
-                    <th class="col">Liczba Pozytywów</th>
-                    <th class="col">Liczba Negatywów</th>
+                    <th class="col">Liczba Zalet</th>
+                    <th class="col">Liczba Wad</th>
                     <th class="col">Średnia Ocena</th>
                     <th class="col">Pobierz Opinie</th>
                 </tr>
@@ -30,7 +30,7 @@
                             {% else %}
                                 <td>
                                     <a class="text-decoration-none" href="{{url_for('product', product_id=product['product_id'])}}">
-                                        {{value}}<i class="bi bi-arrow-up-right-square-fill ms-1"></i>
+                                        {{value}}<i class="bi bi-arrow-up-right-square ms-1"></i>
                                     </a>
                                 </td>
                             {% endif %}
@@ -40,7 +40,7 @@
                             {# Generate download links for specific file formats. #}
                             {% for extension in ["json", "csv", "xlsx"] %}
                                 <a class="text-decoration-none" href="{{url_for('download_opinions', product_id=product['product_id'], extension=extension)}}">
-                                    {{extension.upper()}}<i class="bi bi-download ms-1"></i>
+                                    {{extension.upper()}}<i class="bi bi-filetype-{{extension}} ms-1"></i>
                                 </a><br>
                             {% endfor %}
                         </td>

@@ -1,11 +1,11 @@
 from app import app
+# "BytesIO" is used for working with binary streams.
+from io import BytesIO
 # render_template       - used for creating a page based on the passed jinja template.
 # redirect              - used for redirecting to the passed URL.
 # url_for               - used for generating a URL for the passed subpage (e. g. url_for("extract") generates a URL pointing to the /extract page).
 # request               - used for getting the data sent from the client to the server.
 # send_from_directory   - used for safely sending files from a specific directory.
-# "BytesIO" is used for working with binary streams.
-from io import BytesIO
 from flask import render_template, redirect, url_for, request, send_from_directory, Response
 # "os" package is used for reading/writing to files.
 import os
@@ -58,16 +58,18 @@ def extract():
 # Route to the /products page.
 @app.route('/products')
 def products():
-    PRODUCTS_DIRECTORY = "app/products"
     products = []
 
-    for product_file_path in [os.path.normcase(os.path.join(PRODUCTS_DIRECTORY, filename)) for filename in os.listdir(PRODUCTS_DIRECTORY)]:
-        with open(product_file_path, "r", encoding="UTF-8") as file:
-            product_information = json.load(file)
-            products.append(product_information)
+    for product_id in [filename.split(".")[0] for filename in os.listdir("app/opinions")]:
+            # Create an instance of the Product class based on the product's ID.
+            product = Product(product_id)
+            # Import product's properties to the "product" object.
+            product.import_product(import_opinions=False)
+            # Append properties about a single product to the "products" list.
+            products.append(product.stats_to_dict())
 
     # Open the "products.html.jinja" page displaying a list of the passed products.
-    return render_template("products.html.jinja", products=products, PRODUCTS_DIRECTORY=PRODUCTS_DIRECTORY)
+    return render_template("products.html.jinja", products=products)
 
 # Route to the /author page.
 @app.route('/author')
@@ -75,18 +77,25 @@ def author():
     # Open the "author.html.jinja" page.
     return render_template("author.html.jinja")
 
-# Route to the specific /product/<product_id> page.
+# Route to a specific /product/<product_id> page.
 @app.route('/product/<product_id>')
 # Pass a product's ID as a parameter.
 def product(product_id):
     # Create an instance of the Product class based on the passed product's ID.
     product = Product(product_id)
-    # Import product's information and opinions to the "product" object.
+    # Import product's properties and opinions to the "product" object.
     product.import_product()
     # Set the "stats" variable to a dictionary of the "product" object's statistics.
     stats = product.stats_to_dict()
-    # Open the "product.html.jinja" page displaying specific product information based on the passed parameters.
-    return render_template("product.html.jinja", product_id=product_id, stats=stats)
+    # Open the "product.html.jinja" page displaying specific product's properties based on the passed parameters.
+    return render_template("product.html.jinja", stats=stats)
+
+# Route to a specific /graphs/<product_id> page.
+@app.route('/graphs/<product_id>')
+# Pass product's ID as a parameter.
+def graphs(product_id):
+    # Open the "graphs.html.jinja" page.
+    return render_template("graphs.html.jinja", product_id=product_id)
 
 # Route used for downloading files containing opinions.
 @app.route('/opinions/<product_id>.<extension>')

@@ -1,0 +1,20 @@
+{# This template is based on the "base.html.jinja" template. #}
+{% extends "base.html.jinja" %}
+{% block content %}
+    {# A simple page displaying graphs related to a product's statistics. #}
+    <h2 class="mb-4 text-center">Wykresy</h2>
+        
+    {# Display the "recommendations" and "stars" graphs. #}
+        <div class="row py-2">
+            <div class="col-sm">
+                <img src="../static/plots/{{product_id}}_recommendations.png" alt="Recommendations" class="img-fluid pb-3">
+            </div>
+            <div class="col-sm">
+                <img src="../static/plots/{{product_id}}_stars.png" alt="Stars" class="img-fluid">
+            </div>
+        </div>
+
+    <a type="button" class="btn btn-warning rounded-0" href="{{url_for('product', product_id=product_id)}}">
+        Powrót do strony z produktem<i class="bi bi-arrow-up-right-square ms-1"></i>
+    </a>
+{% endblock content %}
