@@ -222,7 +222,7 @@ class Product():
                 with open(f"app/opinions/{self.product_id}.json", "r", encoding="UTF-8") as jf:
                     # Convert a JSON object to a Python object.
                     opinions = json.load(jf)
-                    
+
                 # For every opinion found in the converted Python object
                 for opinion in opinions:
                     # add the opinion to the current object's "opinions" attribute.

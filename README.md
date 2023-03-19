@@ -15,8 +15,8 @@ Python >=3.10 is required to run this web application.
 
 ***
 
-<p style="text-align:center;">
-  <img src="sample-image-1.jpg">
+<p align="center">
+  <img src="sample-image.jpg">
 </p>
 
 ***

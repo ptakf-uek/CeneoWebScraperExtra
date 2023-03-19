@@ -87,12 +87,8 @@ def product(product_id):
     product.import_product()
     # Set the "product_dictionary" variable to a dictionary of the "product" object's properties.
     product_dictionary = product.to_dict()
-    # # counter = 1
-    # # for opinion in product_dictionary['opinions']:
-    # #     # print(opinion)
-    # #     print(counter)
-    # #     counter += 1
-    # Open the "product.html.jinja" page displaying specific product's properties based on the passed parameters.
+
+    # Open the "product.html.jinja" page displaying specific product's properties and opinions based on the passed parameters.
     return render_template("product.html.jinja", product=product_dictionary)
 
 # Route to a specific /graphs/<product_id> page.
